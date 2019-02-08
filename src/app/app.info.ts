@@ -14,8 +14,8 @@ import { SignalKClient } from 'signalk-client-angular';
 export class AppInfo extends Info {
 
     private DEV_SERVER= {
-        host: null,     // host name || ip address
-        port: null,     // port number
+        host: '52.16.153.222',     // host name || ip address
+        port: 8080,     // port number
         ssl: false       // true || false
     }
 
@@ -53,6 +53,7 @@ export class AppInfo extends Info {
             map: {          // ** map config
                 zoomLevel: 2,
                 center: [0, 0],
+                notecenter: [0,0],
                 rotation: 0,
                 mrid: null,
                 srid: 'EPSG:4326',
@@ -68,6 +69,7 @@ export class AppInfo extends Info {
             vesselTrail: false,
             aisTargets: true,
             courseData: false,
+            notesDisplay: true,
             depthAlarm: { enabled: false, smoothing: 10000 },
             plugins: {
                 instruments: '/@signalk/instrumentpanel'
@@ -80,6 +82,7 @@ export class AppInfo extends Info {
             selections: {   // ** saved selections 
                 routes: [],
                 waypoints: [],
+                notes: [],
                 charts: ['openstreetmap','openseamap'],
                 headingAttribute: 'navigation.headingTrue',
                 aisTargets: null,
@@ -90,6 +93,7 @@ export class AppInfo extends Info {
         this.data= {        // ** received data
             routes: [],
             waypoints: [],
+            notes: [],
             charts: [],
             alarms: [],
             selfId: null,

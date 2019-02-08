@@ -214,6 +214,39 @@ export class SKResources {
         )
     }       
 
+    // ** get notes from sk server
+    getNotes(pos?) {
+        if (!this.app.config.notesDisplay) {
+            this.app.data.notes = []
+            return
+        }
+        let param = ''
+        if ( Object.prototype.toString.call( pos ) === '[object Array]'){
+            var lat=encodeURIComponent(pos[1]).replace(/\./g, '%2E');
+            var long=encodeURIComponent(pos[0]).replace(/\./g, '%2E');
+            param = '?long='+long+'&lat='+lat
+        }
+        this.signalk.apiGet('/resources/notes'+param)
+        .subscribe( 
+            res=> { 
+                this.app.data.notes= [];
+                if(!res) { return }                   
+                let r= Object.entries(res);
+                r.forEach( i=> {
+                   // alert(JSON.stringify(i[0]))
+                  
+                    this.app.data.notes.push([ 
+                        i[0], 
+                        new SKNote(i[1]), true ]); //this.app.config.notesDispay ]); 
+                });
+                return
+            },
+            err=> {}
+        )
+    }       
+
+
+
 }
 
 // ** Signal K route
@@ -262,6 +295,29 @@ export class SKWaypoint {
         if(wpt) {
             if(wpt.position) { this.position= wpt.position }
             if(wpt.feature) { this.feature= wpt.feature }
+        }
+    }
+} 
+
+// ** Signal K note
+export class SKNote {
+    uuid: string
+    title: string
+    name: string
+    description: string
+    timestamp: string
+    position: {latitude:0,longitude:0}
+    source: {label:string}
+
+    constructor(note?) {
+        if(note) {
+            this.name= (note.name) ? note.name : null;
+            this.description= (note.description) ? note.description : null;
+            this.position= (note.position) ? note.position : {latitude:0,longitude:0};
+            this.timestamp= (note.timestamp) ? note.timestamp : null;
+            this.title= (note.title) ? note.title : null;
+            this.source= (note.source) ? note.source : null;
+
         }
     }
 } 

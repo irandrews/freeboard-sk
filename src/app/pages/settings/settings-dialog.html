@@ -139,6 +139,24 @@
                     </mat-card>
                 </div>
 
+                <div class="setting-group">
+                    <div class="setting-group-title">NOTES</div>
+                    <mat-card class="setting-card">
+                        <div class="setting-card-row">
+                            <div class="setting-card-row-item">
+                                <b>Display:</b>
+                                <br>
+                                <mat-checkbox #useput color="primary"
+                                    [(ngModel)]="app.config.notesDisplay" 
+                                    (change)="onFormChange($event, useput)"
+                                    matTooltip="If unchecked Delta Update messages will be used (not recommended)"
+                                    label="after">
+                                    Display Notes
+                                </mat-checkbox>                                        
+                            </div>                                                   
+                        </div>
+                    </mat-card>
+                </div>
             </div>
         </div>
         

@@ -122,7 +122,11 @@
         <a mat-menu-item (click)="drawStart('waypoint')">
             <mat-icon color="primary">edit_location</mat-icon>
             <span>Drop Waypoint</span>			
-        </a>                    
+        </a>    
+        <a mat-menu-item (click)="drawStart('note')">
+            <mat-icon color="primary">edit_location</mat-icon>
+            <span>Drop Note</span>			
+        </a>  
         <mat-divider></mat-divider>   
         <a mat-menu-item (click)="drawStart('route')">
             <mat-icon color="primary">directions</mat-icon>
@@ -372,6 +376,36 @@
                         </aol-source-vector>
                     </aol-layer-vector>
                     <!-- *** /WAYPOINTS *** -->     
+ 
+                     <!-- *** NOTES *** -->
+                    <aol-layer-vector [zIndex]="80">
+                        <aol-source-vector>
+                        <div *ngFor="let w of app.data.notes; let i=index;">
+                            <aol-feature *ngIf="w[2]" [id]="'note.'+ w[0]">
+                                <aol-geometry-point>
+                                    <aol-coordinate 
+                                        [x]="w[1].position.longitude" 
+                                        [y]="w[1].position.latitude" 
+                                        [srid]="app.config.map.srid">
+                                    </aol-coordinate>
+                                </aol-geometry-point>
+                                <aol-style>
+                                    <aol-style-icon 
+                                        [anchor]="[10.5, 25]"
+                                        [anchorXUnits]="'pixels'"
+                                        [anchorYUnits]= "'pixels'"
+                                        [src]="'./assets/img/marker-green.png'"
+                                        [size]="[25,25]"
+                                        [scale]="1"
+                                        [rotateWithView]="false"
+                                        [rotation]="0">
+                                    </aol-style-icon>
+                                </aol-style>
+                            </aol-feature>
+                        </div>
+                        </aol-source-vector>
+                    </aol-layer-vector>
+                    <!-- *** /NOTES *** -->   
                     
                     <!-- *** AIS TARGETS *** -->
                     <aol-layer-vector *ngIf="app.config.aisTargets"
