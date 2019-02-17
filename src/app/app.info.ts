@@ -14,8 +14,8 @@ import { SignalKClient } from 'signalk-client-angular';
 export class AppInfo extends Info {
 
     private DEV_SERVER= {
-        host: '52.16.153.222',     // host name || ip address
-        port: 8080,     // port number
+        host: null,     // host name || ip address
+        port: null,     // port number
         ssl: false       // true || false
     }
 
@@ -69,7 +69,7 @@ export class AppInfo extends Info {
             vesselTrail: false,
             aisTargets: true,
             courseData: false,
-            notesDisplay: true,
+            notesDisplay: false,
             depthAlarm: { enabled: false, smoothing: 10000 },
             plugins: {
                 instruments: '/@signalk/instrumentpanel'

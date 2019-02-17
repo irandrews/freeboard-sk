@@ -308,6 +308,8 @@ export class SKNote {
     timestamp: string
     position: {latitude:0,longitude:0}
     source: {label:string}
+    mimeType : string
+    readOnly : string
 
     constructor(note?) {
         if(note) {
@@ -317,6 +319,8 @@ export class SKNote {
             this.timestamp= (note.timestamp) ? note.timestamp : null;
             this.title= (note.title) ? note.title : null;
             this.source= (note.source) ? note.source : null;
+            this.mimeType= (note.mimeType) ? note.mimeType : null;
+            this.source= (note.readOnly) ? note.readOnly : true;
 
         }
     }
