@@ -57,6 +57,7 @@ export class AppInfo extends Info {
             map: {          // ** map config
                 zoomLevel: 2,
                 center: [0, 0],
+                notecenter: [0,0],
                 rotation: 0,
                 mrid: null,
                 srid: 'EPSG:4326',
@@ -72,6 +73,7 @@ export class AppInfo extends Info {
             vesselTrail: false,
             aisTargets: true,
             courseData: false,
+            notesDisplay: false,
             depthAlarm: { enabled: false, smoothing: 10000 },
             plugins: {
                 instruments: '/@signalk/instrumentpanel'
@@ -84,6 +86,7 @@ export class AppInfo extends Info {
             selections: {   // ** saved selections 
                 routes: [],
                 waypoints: [],
+                notes: [],
                 charts: ['openstreetmap','openseamap'],
                 headingAttribute: 'navigation.headingTrue',
                 aisTargets: null,
@@ -95,6 +98,7 @@ export class AppInfo extends Info {
         this.data= {        // ** received data
             routes: [],
             waypoints: [],
+            notes: [],
             charts: [],
             alarms: [],
             selfId: null,

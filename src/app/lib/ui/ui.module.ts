@@ -16,7 +16,10 @@ import { PopoverComponent } from './popover';
 import { TextDialComponent } from './dial-text';
 import { ResourceDialog, AISPropertiesDialog } from './resource-dialogs';
 import { PlaybackDialog } from './playback-dialog';
+
 import { AlarmsDialog, AlarmComponent } from './alarms';
+
+import {ResourceNoteDialog, ResourceNoteInputDialog } from './resource-dialogs-note';
 
 import { GeometryCircleComponent } from '../components/geom-circle.component';
 import { AisTargetsComponent } from '../components/feature-ais.component';
@@ -33,17 +36,32 @@ import { CompassComponent } from './compass.component';
         MsgBox, AlertDialog, ConfirmDialog, AboutDialog,
         FileInputComponent, TextDialComponent, LoginDialog, AlarmsDialog, AlarmComponent,
         PopoverComponent, ResourceDialog, AISPropertiesDialog, PlaybackDialog,
+<<<<<<< HEAD
         GeometryCircleComponent, AisTargetsComponent, CompassComponent
+=======
+        GeometryCircleComponent, AisTargetsComponent,
+        ResourceNoteDialog, ResourceNoteInputDialog
+>>>>>>> notes
     ],
     exports: [
         MsgBox, AlertDialog, ConfirmDialog, AboutDialog,
         FileInputComponent, TextDialComponent, LoginDialog, AlarmsDialog,
         PopoverComponent, ResourceDialog, AISPropertiesDialog, PlaybackDialog,
+<<<<<<< HEAD
         GeometryCircleComponent, AisTargetsComponent, CompassComponent, AlarmComponent,
     ],
     entryComponents: [
         MsgBox, AlertDialog, ConfirmDialog, AboutDialog, LoginDialog,
         ResourceDialog, AISPropertiesDialog, PlaybackDialog, AlarmsDialog
+=======
+        GeometryCircleComponent, AisTargetsComponent,        
+        ResourceNoteDialog, ResourceNoteInputDialog
+    ],
+    entryComponents: [
+        MsgBox, AlertDialog, ConfirmDialog, AboutDialog, LoginDialog,
+        ResourceDialog, AISPropertiesDialog, PlaybackDialog,
+        ResourceNoteDialog, ResourceNoteInputDialog
+>>>>>>> notes
     ], 
     providers: []  
 })

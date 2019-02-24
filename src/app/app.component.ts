@@ -9,9 +9,12 @@ import { PlaybackDialog } from './lib/ui/playback-dialog';
 import { AlarmsDialog } from './lib/ui/alarms';
 import { SettingsDialog } from './pages';
 import { GPXImportDialog } from './lib/gpxload/gpxload.module';
+import {ResourceNoteDialog, ResourceNoteInputDialog  } from './lib/ui/resource-dialogs-note';
+
 
 import { SignalKClient, Alarm, AlarmState } from 'signalk-client-angular';
-import { SKResources, SKWaypoint, SKVessel } from './lib/sk-resources';
+import { SKResources, SKWaypoint, SKVessel , SKNote } from './lib/sk-resources';
+
 import { Convert } from './lib/convert';
 import { GeoUtils } from './lib/geoutils';
 
@@ -571,6 +574,7 @@ export class AppComponent {
             this.isDirty=false;
         }
         else { this.isDirty=true }
+        this.skres.getNotes(center)
     }
    
     mapMouseClick(e:any) {
@@ -812,7 +816,27 @@ export class AppComponent {
                 info.push(['Latitude', item[0][1]['position']['latitude'].toFixed(6)]); 
                 info.push(['Longitude', item[0][1]['position']['longitude'].toFixed(6)]);    
                 this.display.overlay['id']=t[1];             
-                break;       
+                break;      
+            case 'note':
+                item= this.app.data.notes.filter( i=>{ if(i[0]==t[1]) return true });
+                if(!item) { return false }
+                this.display.overlay['showProperties']=true;
+                this.display.overlay['gotoWaypoint']=false;
+                this.display.overlay['type']='note';
+                this.display.overlay.title= item[0][1].title;   
+                this.display.overlay['canDelete']= false;
+                if(item[0][1].name) {
+                    info.push( ['Author', item[0][1].name] );
+                }
+                if(item[0][1].timestamp) {
+                var date = new Date(item[0][1].timestamp);
+                var dv = date.getDate()+'-' + (date.getMonth()+1) + '-'+date.getFullYear();
+                info.push( ['Date', dv]);
+                }
+                //info.push(['Latitude', item[0][1]['latitude'].toFixed(6)]); 
+                //info.push(['Longitude', item[0][1]['longitude'].toFixed(6)]);    
+                this.display.overlay['id']=t[1]; 
+                break; 
         }
         this.display.overlay.content= info;
         return true;
@@ -827,6 +851,11 @@ export class AppComponent {
                 this.draw.mode= mode;
                 this.draw.enabled= true;
                 break;
+            case 'note':
+                this.draw.type= 'Point'
+                this.draw.mode= mode;
+                this.draw.enabled= true;
+                break;  
             case 'route':
                 this.draw.type= 'LineString'
                 this.draw.mode= mode;
@@ -847,7 +876,11 @@ export class AppComponent {
                     this.app.config.map.mrid, 
                     this.app.config.map.srid
                 );                 
+                if (this.draw.mode == 'note') {
+                     this.noteAdd({position: c});
+                } else {
                 this.waypointAdd({position: c});
+                }
                 break;
             case 'LineString':
                 let rc= e.feature.getGeometry().getCoordinates();
@@ -944,7 +977,10 @@ export class AppComponent {
                 break;
             case 'route': 
                 this.routeDetails(r);
-                break;                
+                break;     
+            case 'note': 
+                this.noteDetails(r);
+                break;  
         }
     }
 
@@ -1365,7 +1401,126 @@ export class AppComponent {
         this.app.saveConfig();
     }    
 
+
+    // Display contents of one note.
+    noteDetails(e) {
+        let resId= null; 
+        let title: string;
+        let note = [];
+        let addMode: boolean=true;
+        resId= e.id;
+        this.signalk.apiGet('/resources/notes/'+resId)
+        .subscribe( 
+            res=> { 
+                if(!res) { return }     
+
+                let r= Object.entries(res);
+
+                r.forEach( i=> {
+                    var date = new Date(i[1].timestamp);
+                    var dv = date.getDate()+'-' + (date.getMonth()+1) + '-'+date.getFullYear();
+                    i[1].timestamp = dv
+                    note.push([ 
+                        i[1].uuid, 
+                        new SKNote(i[1]), true ]); 
+                });
+                let w= note.filter( i=>{ if(i[0]==resId) return true });
+                if(w.length==0) { return }
+
+                addMode=false;
+                let dref= this.dialog.open(ResourceNoteDialog, {
+                    disableClose: true,
+                    data: {
+                        title: w[0][1].title,
+                        latitude: w[0][1].position.latitude,
+                        longitude: w[0][1].position.longitude,
+                        description: w,
+                        addMode: addMode,
+                        source:w[0][1].source.label
+                    }
+                });   
+                
+           
+            dref.afterClosed().subscribe( r=> {
+            if(r.result) { // ** save / update note **
+                let note = new SKNote;
+                note.uuid = r.data.uuid
+                note.title = r.data.title
+                note.description = r.data.description
+                note.position = r.data.position
+                note.source = r.data.source
+                note.timestamp = ''
+                note.name= ''
+                this.noteAdd(e,note)
+            }
+            })
+                
+        });
+    }
+
+    // Add a new note
+    noteAdd(e=null,data=null) {
+        let resId= '0'; 
+        let title: string;
+        let description: string;
+        let note: SKNote;
+        let addMode: boolean=true;
+        let heading: string;
+        let position = [e.position[0],e.position[1]]
+        let show = false
+
+        if(!e.id && e.position) { // add at provided position
+            note = new SKNote(); 
+            heading = 'Add New Note'
+           
+        } else { // add subsequent note
+            resId= e.id;
+            heading = 'Add Further Note'
+            title=e.title
+            show = true
+            // get title
+            // get description
+         }    
+            
+        let dref= this.dialog.open(ResourceNoteInputDialog, {
+            disableClose: true,
+            data: {
+                heading: heading,
+                title: title,
+                description: description,
+                position : position,
+                uuid: resId,
+                addMode: addMode,
+                show: show
+            }
+
+        });          
+
+        dref.afterClosed().subscribe( r=> {
+            if(r.result) { // ** save / update note **
+                let note = new SKNote;
+                note.uuid = r.data.uuid
+                note.title = r.data.title
+                note.description = r.data.description
+                note.position = { latitude: r.data.position[1], longitude:r.data.position[0] }
+                note.timestamp = ''
+                note.name= ''
+                let t = this.signalk.post('/signalk/v1/api/resources/notes/',note)
+                       .subscribe( 
+                     res=> {
+                        this.showAlert('Note Submission:', 'New Note Created');
+                         this.skres.getNotes()
+                     },
+                     err=> {
+                        this.showAlert('Note Submission:', err.error.errors[0].msg);
+                     }
+            )
+            }
+        });
+    }
+
     chartSelected(e:any) {
+
         if(!e) { return }
         let t= this.app.data.charts.map(
             i=> { if(i[2]) { return i[0] } }
@@ -1551,6 +1706,7 @@ export class AppComponent {
                 // ** query for resources
                 this.skres.getRoutes();
                 this.skres.getWaypoints();
+                this.skres.getNotes();
                 this.skres.getCharts();        
                 // ** query anchor alarm status
                 this.getAnchorStatus();                
