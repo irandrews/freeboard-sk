@@ -1409,7 +1409,7 @@ export class AppComponent {
         let note = [];
         let addMode: boolean=true;
         resId= e.id;
-        this.signalk.apiGet('/resources/notes/'+resId)
+        this.signalk.api.get('/resources/notes/'+resId)
         .subscribe( 
             res=> { 
                 if(!res) { return }     

@@ -223,7 +223,7 @@ export class SKResources {
             var long=encodeURIComponent(pos[0]).replace(/\./g, '%2E');
             param = '?long='+long+'&lat='+lat
         }
-        this.signalk.apiGet('/resources/notes'+param)
+        this.signalk.api.get('/resources/notes'+param)
         .subscribe( 
             res=> { 
                 this.app.data.notes= [];

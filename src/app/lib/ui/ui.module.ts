@@ -36,32 +36,21 @@ import { CompassComponent } from './compass.component';
         MsgBox, AlertDialog, ConfirmDialog, AboutDialog,
         FileInputComponent, TextDialComponent, LoginDialog, AlarmsDialog, AlarmComponent,
         PopoverComponent, ResourceDialog, AISPropertiesDialog, PlaybackDialog,
-<<<<<<< HEAD
-        GeometryCircleComponent, AisTargetsComponent, CompassComponent
-=======
-        GeometryCircleComponent, AisTargetsComponent,
+        GeometryCircleComponent, AisTargetsComponent, CompassComponent,
         ResourceNoteDialog, ResourceNoteInputDialog
->>>>>>> notes
     ],
     exports: [
         MsgBox, AlertDialog, ConfirmDialog, AboutDialog,
         FileInputComponent, TextDialComponent, LoginDialog, AlarmsDialog,
         PopoverComponent, ResourceDialog, AISPropertiesDialog, PlaybackDialog,
-<<<<<<< HEAD
         GeometryCircleComponent, AisTargetsComponent, CompassComponent, AlarmComponent,
+ 	ResourceNoteDialog, ResourceNoteInputDialog
     ],
     entryComponents: [
         MsgBox, AlertDialog, ConfirmDialog, AboutDialog, LoginDialog,
-        ResourceDialog, AISPropertiesDialog, PlaybackDialog, AlarmsDialog
-=======
+        ResourceDialog, AISPropertiesDialog, PlaybackDialog, AlarmsDialog,
         GeometryCircleComponent, AisTargetsComponent,        
-        ResourceNoteDialog, ResourceNoteInputDialog
-    ],
-    entryComponents: [
-        MsgBox, AlertDialog, ConfirmDialog, AboutDialog, LoginDialog,
-        ResourceDialog, AISPropertiesDialog, PlaybackDialog,
-        ResourceNoteDialog, ResourceNoteInputDialog
->>>>>>> notes
+        ResourceNoteDialog, ResourceNoteInputDialog,
     ], 
     providers: []  
 })
