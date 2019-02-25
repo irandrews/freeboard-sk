@@ -1,6 +1,7 @@
 # Freeboard
 
-This is a port of Freeboard (http://www.42.co.nz/freeboard) to use the Signal K communication protocols and utilise Signal K server features.
+This is a port of Freeboard (http://www.42.co.nz/freeboard) which can access CA Cruising Rreports and  uses the Signal K communication protocols and utilise Signal K server features.
+It should be used in conjunction woth the ca-reports Node Server plugin. 
 
 
 ## Features:
@@ -20,6 +21,7 @@ This is a port of Freeboard (http://www.42.co.nz/freeboard) to use the Signal K 
     - Add Waypoint at: Cursor or Vessel position
     - Delete Waypoint(s) / Route(s) 
     - Import Routes and Waypoints from GPX files
+    - View and Add CA CRs
 
 **Note:** Server requests to update data values *e.g. the creation, updating or deletion of resources* requires is can be done via either PUT requests *(default / recommended)* or web socket UPDATES.
 
@@ -75,6 +77,7 @@ For example the following plugins installed on the *Signal K node server* will e
 - GPXLoad (v1.1.1 or later) *(Routes & Waypoints provider)*
 - signalk-anchoralarm-plugin *(anchor alarm settings & notifications)*
 - signalk-simple-notifications *(depth alarm notifications)*
+- ca-reports *(Cruising Association cruising reports)*
 
 ### Integrated Apps on Server
 ![Server Instruments](https://user-images.githubusercontent.com/38519157/46716813-00d27080-ccad-11e8-98a3-ab4b4f47df11.png)
